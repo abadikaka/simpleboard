@@ -31,7 +31,25 @@ This MVP deliberately keeps owner data local on each Mac. Employee journeys are 
 
 ## Built with Codex and GPT-5.6
 
-This project was developed collaboratively with OpenAI Codex using GPT-5.6. Codex helped plan and implement the native SwiftUI macOS app, model/persistence layer, layout stabilization, employee journey, Supabase RPC integration, test coverage, QA documentation, app icon and TestFlight release preparation. Product decisions, credentials, Apple signing, and release approval remain under the project owner's control.
+Simple Board was developed as an iterative collaboration with OpenAI Codex powered by GPT-5.6. I set the product direction and evaluated each working build; Codex helped turn those decisions, screenshots, API documents, and test feedback into implementation changes that could be compiled and verified immediately.
+
+### Where Codex accelerated the workflow
+
+- **Architecture and implementation:** Codex translated the original React/Vite onboarding prototype into a native SwiftUI macOS application. It helped define the typed domain models, local snapshot repository, attachment handling, observable application state, and isolated employee preview/session behavior.
+- **Native UX iteration:** I supplied screenshots and described layout problems observed at real window sizes. GPT-5.6 traced those problems through the SwiftUI hierarchy and helped stabilize split-view sizing, responsive editor controls, empty states, stage scrolling, keyboard behavior, and accessibility labels.
+- **Swift 6 engineering:** Codex helped keep UI state on the main actor, move persistence and network work behind asynchronous boundaries, and resolve strict-concurrency and `Sendable` issues without weakening the project's compiler settings.
+- **Backend integration:** After I chose Supabase for passwordless employee access, Codex interpreted the supplied API reference and Swift integration guide, then implemented the token-based employee journey using scoped RPC calls while keeping the owner workspace local-first.
+- **Quality and release work:** Codex expanded Swift Testing and UI-test coverage, produced the QA and feature guide, helped create and validate the macOS icon assets, diagnosed signing and provisioning errors, built the signed archive, and prepared the TestFlight release.
+
+### Key decisions I made
+
+I chose the native SwiftUI direction, local-first owner storage, seven onboarding material types, passwordless employee journeys, and the overall visual and interaction design. I also decided to defer CloudKit after evaluating the provisioning and Apple Account requirements, and to ship the beta with Supabase employee links instead. I defined the MVP boundary—excluding billing, analytics, multi-admin collaboration, and public browser portals—and approved the security model, feature behavior, and release scope.
+
+### How GPT-5.6 contributed to the final result
+
+GPT-5.6 was especially useful as a reasoning and implementation partner across disciplines. It connected visual evidence from screenshots to layout code, converted product feedback into precise SwiftUI changes, mapped backend documentation into typed Swift networking interfaces, designed regression cases around real failure modes, and interpreted Xcode archive and distribution logs during the TestFlight process. This shortened the loop between identifying a problem, implementing a solution, and validating the result.
+
+All credentials, signing identities, provisioning profiles, Apple and Supabase account access, product judgment, design approval, and final release decisions remained under my control. Codex accelerated the engineering workflow; I remained responsible for the product and every external action.
 
 ## Repository hygiene
 
