@@ -31,3 +31,8 @@ macOS/Config/Supabase.xcconfig
 # Xcode per-user workspace and window state
 *.xcuserstate
 xcuserdata/
+
+# Hackathon video intermediates and local exports
+macOS/SubmissionAssets/production/drafts/
+macOS/SubmissionAssets/production/generated/
+macOS/SubmissionAssets/production/exports/

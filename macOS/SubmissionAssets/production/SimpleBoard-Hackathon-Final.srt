@@ -1,0 +1,35 @@
+1
+00:00:05,000 --> 00:00:21,200
+Employee onboarding should create confidence. But for growing teams, the first days are often scattered across messages, spreadsheets, and disconnected documents. That is why we built Simple Board: a native macOS onboarding workspace for small team owners and their employees.
+
+2
+00:00:21,200 --> 00:00:30,900
+Here is the Sunrise Bistro demo. From one dashboard, an owner can see active employees, published programs, completion, and people who may need support.
+
+3
+00:00:30,900 --> 00:00:47,500
+The manager opens Kitchen Staff Onboarding. Programs are organized into stages with deadlines, clear outcomes, and seven learning formats: video, reading, checklist, quiz, task, document, and meeting. Preview mode lets the manager experience the journey safely without changing any employee record.
+
+4
+00:00:47,500 --> 00:01:06,200
+On the employee record, the owner can see the assigned program, stage progress, and completion evidence. Now we switch to the employee point of view. Budi signs in with his own account and immediately sees one focused journey, his progress, and the next action to complete.
+
+5
+00:01:06,200 --> 00:01:25,700
+Budi acknowledges the Kitchen Code of Conduct. His progress moves from seventy-one to eighty-six percent. When the owner returns, the dashboard already shows the updated result. The Performance view turns that activity into a clear signal: who is on track, who has completed onboarding, and who needs help.
+
+6
+00:01:25,700 --> 00:01:48,400
+We built Simple Board in Codex. We started from a browser prototype and asked Codex to help turn it into a real native SwiftUI application. Codex worked directly inside the repository: creating the Xcode project, typed data models, an observable application store, local persistence, Keychain credentials, responsive macOS layouts, previews, the employee portal, and automated tests.
+
+7
+00:01:48,400 --> 00:02:06,300
+Our workflow was iterative. Codex inspected screenshots, reproduced layout defects, changed the SwiftUI implementation, ran Xcode builds and tests, and used the evidence to refine the next pass. That let one small team move from idea to a working, TestFlight-ready Mac app much faster.
+
+8
+00:02:06,300 --> 00:02:31,500
+GPT-5.6 was the reasoning layer throughout that process. It helped translate product goals into a safe owner and employee permission model, design local-first storage and secure invitation flows, trace difficult layout and state bugs, and plan end-to-end test coverage. We used it as an engineering partner, not a one-shot generator: describe the intent, reason over the code, verify the result, and iterate.
+
+9
+00:02:31,500 --> 00:02:41,400
+Simple Board makes onboarding clear for leaders and actionable for employees. Because every first day should feel like the company was ready for you.
