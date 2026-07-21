@@ -1,55 +1,65 @@
-# Product Context
+# Simple Board — Product Context
 
-> This file exists so that anyone (or any AI session) opening this repo has the product context immediately, without it getting lost between conversations. Read this before making product decisions.
+Read this document before making product decisions. It describes the product that is currently shipped and demonstrated from this repository.
 
-## What this product is
+## What Simple Board is
 
-**Onboard** (working name; UI also shows "Onboardly" on some auth screens) is a digital product focused on being an **onboarding platform for non-technical businesses** — small and mid-size companies (restaurants, retail, clinics, agencies, etc.) that need a structured way to bring new employees up to speed, without needing any technical setup themselves.
+**Simple Board** is a local-first macOS onboarding workspace for small, non-technical teams: restaurants, retail businesses, clinics, studios, and agencies. It gives an owner a clear place to build onboarding, assign people, inspect learning evidence, and spot employees who may need support.
 
-The core idea: give a business owner or manager a simple way to either
+The intended experience is deliberately straightforward:
 
-1. **Set up their company** as a workspace and build a full onboarding system for their team, or
-2. **Just create an onboarding journey** for their employees quickly, without a lot of ceremony.
+1. An owner starts a workspace or explores a demo.
+2. They create a structured onboarding program for a role.
+3. They assign an employee and follow progress and evidence.
+4. An employee completes a focused, private onboarding journey.
 
-Both paths should feel approachable to someone who is not a software person — the target user is a restaurant manager, a clinic owner, an agency lead, not an engineer.
+The product is for people running teams, not for people who want to configure enterprise software.
 
-## Current alignment with the codebase
+## What is implemented
 
-Path 1 (create a company, then build onboarding) is what's implemented today:
+The native product is the SwiftUI macOS app in `macOS/`. It supports macOS 14 and later.
 
-- `Register` → `Setup` (2 steps: company name/industry/size/website, then logo/description/brand color) → `Dashboard`.
-- Every **Program** (an onboarding journey) belongs to one `company` in the store — there is no path today to create a program without first having a company.
+- Local registration, demo selection, account switching, first-run company setup, and demo reset.
+- A native owner workspace with Company Profile, Dashboard, Programs, Employees, and Performance.
+- Programs with draft/published status, banner attachments, stages, deadlines, drag-and-drop stage ordering, duplication, deletion, Insights, and isolated Preview.
+- Seven material types: video, reading, checklist, quiz, task, document, and meeting.
+- Employee records, department filtering, assignment and reassignment confirmation, local employee sign-in, progress, quiz scores, checklist evidence, and document acknowledgements.
+- A passwordless Supabase employee journey: a scoped employee access token opens only that employee's assigned journey and records material completion/evidence through documented RPCs.
+- Local persistence through a versioned JSON snapshot in Application Support, with attachments stored separately and local credentials kept in Keychain.
 
-Path 2 ("just create an onboarding journey" without full company setup) is **not yet built**. Anyone continuing product work here should treat this as a real gap: a lighter-weight entry point (e.g. "just give it a name, skip industry/size/branding, add it later") would better match the stated vision and lower the barrier for non-technical users who want to try the product before committing to full setup.
+The included demos are Sunrise Bistro, which is populated, and Bloom Studio, which intentionally begins empty.
 
-## Domain model (as implemented)
+## Product boundaries for this MVP
 
-- **Company** — the business/workspace. Fields: name, industry, size, website, description, logo, primaryColor, departments.
-- **Program** — an onboarding journey (e.g. "Kitchen Staff Onboarding"). Has a name, description, target role, estimated duration, status (draft/published), an optional header image, and an optional public share link.
-- **Stage** — a phase within a program (e.g. "Day 1–2: Food Safety"), with an intro, an optional deadline (day N from start), and a list of materials.
-- **Material** — a single unit of content inside a stage. Seven types exist: `video`, `reading`, `checklist` (items can require photo evidence), `quiz` (scored, pass/fail), `task`, `document` (can have an attached file, optional acknowledgment), `meeting`.
-- **Employee** — a person being onboarded. Has profile fields, an assigned program, and a `completedMaterials` list tracking progress.
+The owner workspace is intentionally local-first. It does **not** yet sync a full owner workspace between Macs, create remote employee records/tokens from the owner UI, or provide collaborative multi-admin editing.
 
-## Key flows that exist today
+The Supabase employee flow is a focused journey endpoint, not a general browser portal. A backend administrator currently creates the employee record, assigns a published program, generates a high-entropy access token, and sends the private link. The Mac app then calls the token-protected `get_employee_portal`, `record_material_detail`, and `mark_material_complete` RPCs.
 
-- **Admin builds a program**: Program Editor → add stages → add materials of any of the 7 types.
-- **Admin previews the journey**: Preview mode simulates what an employee would see and do (watch video, take quiz, check off checklist items incl. photo evidence, acknowledge documents) — this is a simulation for the admin, not tied to a real employee's record.
-- **Admin tracks progress**: Dashboard (team-wide health), Performance (cross-program employee table), and per-program Insights (a slide-over panel with Overview + Results tabs) all read from `employee.completedMaterials`.
-- **Admin shares externally**: a program can get a public, unauthenticated share link showing an aggregate, PII-free overview dashboard (enrollment count, completion rate, stage list) — meant to be safe to hand to a client or investor.
-- **Owner Panel**: a separate multi-tenant view (`/owner`) for whoever runs the SaaS itself, showing all customer accounts.
+The following are intentionally out of scope for this release:
 
-## Important gap: there is no real employee-facing product yet
+- CloudKit/iCloud workspace sync and Apple Account invitations.
+- Public program dashboards or public employee links.
+- Browser-based owner portals, billing, analytics, and multi-admin collaboration.
+- Owner-side remote invitation issuance and workspace synchronization.
 
-There is no login or portal for the actual employee being onboarded. The only way to "experience" a program is through the admin's Preview mode, which does not write back to any employee's real record. This means today the product is really **"a tool for admins to design and monitor onboarding"**, not yet **"a tool employees actually go through."** Building a real employee-facing execution flow (a link an employee opens, logs into, and completes their own onboarding — recording real quiz scores, real photo evidence, real completion timestamps) is the next big structural piece needed to make this a complete product, and it directly unlocks making per-employee data in Insights/Results real instead of only reflecting the pre-seeded demo data.
+## Architecture at a glance
 
-## Architecture notes (so no one is surprised)
+- **Native application:** SwiftUI on macOS, with semantic system colors and native navigation, tables, menus, dialogs, file import, drag-and-drop, keyboard access, and VoiceOver labels.
+- **State and storage:** a main-actor observable app store backed by an actor-based repository. Local edits are retained if disk saves fail; snapshot writes are serialized and atomic.
+- **Security:** local account credentials use Keychain. The app never stores a Supabase service-role key. Employee portal tokens remain in memory for the active remote session.
+- **Testing:** Swift Testing covers domain, persistence, selection repair, progress, and employee-session behavior. UI tests cover important navigation and destructive-flow smoke paths; the QA guide documents manual macOS checks that are not reliable to automate.
 
-- **No backend.** This is a client-only React + Vite app. All state lives in a Zustand store, persisted to `localStorage` (see `src/store/useStore.js`). There is no server, no database, no real authentication — "login" just matches against a hardcoded list of demo users/accounts.
-- Because of this, anything described as "shared" (e.g. the public share link) only works within the same browser/localStorage — it is a demo of the *feature*, not a production-ready sharing mechanism yet.
-- Demo data exists for two accounts: **Sunrise Bistro** (a restaurant, fully populated with programs/employees) and **Bloom Studio** (empty, to show the first-run experience).
+## Product decisions
 
-## Where to take this next (open questions for product direction)
+- Keep the owner experience usable without cloud setup or a backend.
+- Let employees receive a private, focused journey rather than exposing the owner workspace.
+- Favor clear, native macOS workflows over reproducing the original web UI exactly.
+- Defer shared-workspace synchronization until there is a validated multi-user requirement and operational plan.
 
-- Should Path 2 (quick onboarding journey without full company setup) skip company creation entirely, or just make company setup optional/deferred?
-- Real employee accounts/portal — needed to make progress tracking, quiz results, and checklist photo evidence reflect real usage instead of only the demo dataset.
-- Real backend/persistence — localStorage is fine for a prototype but not for a real multi-user product (data doesn't sync across devices or between admin and employee).
+## Repository map
+
+- `macOS/` — the shipped native Simple Board application, tests, configuration example, and QA guide.
+- `src/` — the retained React/Vite prototype. It is historical reference material and does not share state with the macOS app.
+- `README.md` — build instructions, current scope, and an accurate record of how Codex and GPT-5.6 supported development.
+
+For detailed setup, employee-link handling, layout acceptance, and release smoke testing, see `macOS/README.md` and `macOS/QA-and-Feature-Guide.md`.
