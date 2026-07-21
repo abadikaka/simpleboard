@@ -1,5 +1,7 @@
 # YouTube submission package
 
+Public video: https://youtu.be/rZm5OnHO75U
+
 ## Title
 
 Simple Board — Native macOS Onboarding Built with Codex + GPT-5.6

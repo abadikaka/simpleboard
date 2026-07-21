@@ -4,6 +4,10 @@ Simple Board is a local-first macOS onboarding workspace for small teams. Owners
 
 The repository also retains the original React/Vite prototype. The native macOS product lives in [`macOS/`](macOS/).
 
+## Demo video
+
+[Watch the 2:49 Simple Board product demo on YouTube](https://youtu.be/rZm5OnHO75U). It follows the complete owner-to-employee onboarding loop and explains how Codex and GPT-5.6 helped turn the browser prototype into a native SwiftUI macOS app.
+
 ## What is included
 
 - Native SwiftUI macOS 14+ owner workspace: demo setup, company profile, dashboard, programs, employees, performance, attachments, and local persistence.
