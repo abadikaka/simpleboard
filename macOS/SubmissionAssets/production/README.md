@@ -6,7 +6,6 @@ This folder contains the reproducible sources for the public Simple Board hackat
 
 - macOS with Homebrew FFmpeg
 - `curl` and `jq`
-- An OpenAI API key exported as `OPENAI_API_KEY` only while generating narration
 - The 2:39 visual draft at `drafts/SimpleBoard-Hackathon-Final-Under-3-Minutes.mp4`
 
 The API key is never written to disk. Generated narration, intermediate media, and final exports are ignored by Git.
@@ -14,12 +13,14 @@ The API key is never written to disk. Generated narration, intermediate media, a
 ## Build
 
 ```sh
-./generate_narration.sh
+./generate_macos_narration.sh
 ./build_demo_video.sh
 ./validate_demo_video.sh
 ```
 
-The narration uses `gpt-4o-mini-tts`, the `marin` voice, and WAV output. OpenAI requires a clear disclosure that the voice is AI-generated; the final end card and YouTube description both contain that disclosure.
+The default narration uses the built-in macOS `Samantha` voice at a tuned product-demo pace and exports a 48 kHz WAV without a network request or API charge. Captions are reviewed and timed in the committed SRT. The final end card and YouTube description disclose that the narration is synthetic.
+
+An optional `generate_narration.sh` path remains available for OpenAI `gpt-4o-mini-tts` with the `marin` voice. It requires an API key with only `Text-to-Speech (/v1/audio/speech)` Request permission exported as `OPENAI_API_KEY`; the key is never written to disk.
 
 The build creates:
 

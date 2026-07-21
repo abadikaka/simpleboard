@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 DRAFT="$SCRIPT_DIR/drafts/SimpleBoard-Hackathon-Final-Under-3-Minutes.mp4"
-NARRATION="$SCRIPT_DIR/generated/narration-marin.wav"
+NARRATION="$SCRIPT_DIR/generated/narration.wav"
 EXPORT_DIR="$SCRIPT_DIR/exports"
 FINAL="$EXPORT_DIR/SimpleBoard-Hackathon-Demo-Final.mp4"
 THUMBNAIL="$EXPORT_DIR/SimpleBoard-Hackathon-Thumbnail.png"

@@ -3,9 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUTPUT_DIR="$SCRIPT_DIR/generated"
-OUTPUT_FILE="$OUTPUT_DIR/narration-marin.wav"
-RAW_CAPTIONS="$OUTPUT_DIR/narration-raw.srt"
-FINAL_CAPTIONS="$SCRIPT_DIR/SimpleBoard-Hackathon-Final.srt"
+OUTPUT_FILE="$OUTPUT_DIR/narration.wav"
 
 if [[ -z "${OPENAI_API_KEY:-}" ]]; then
   echo "OPENAI_API_KEY is required. Export it for this command only; do not save it in the repository." >&2
@@ -31,20 +29,8 @@ curl --fail --silent --show-error \
   --data "$REQUEST_JSON" \
   --output "$OUTPUT_FILE"
 
-curl --fail --silent --show-error \
-  https://api.openai.com/v1/audio/transcriptions \
-  -H "Authorization: Bearer ${OPENAI_API_KEY}" \
-  -F "model=whisper-1" \
-  -F "response_format=srt" \
-  -F "language=en" \
-  -F "file=@${OUTPUT_FILE};type=audio/wav" \
-  --output "$RAW_CAPTIONS"
-
-ffmpeg -hide_banner -loglevel error -y -itsoffset 5 \
-  -i "$RAW_CAPTIONS" -c:s srt "$FINAL_CAPTIONS"
-
 ffprobe -v error -show_entries format=duration:stream=codec_name,sample_rate,channels \
   -of default=noprint_wrappers=1 "$OUTPUT_FILE"
 
 echo "Generated $OUTPUT_FILE"
-echo "Generated synchronized captions at $FINAL_CAPTIONS"
+echo "Use the reviewed captions at $SCRIPT_DIR/SimpleBoard-Hackathon-Final.srt"

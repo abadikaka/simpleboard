@@ -98,7 +98,7 @@ let outro = render(size: NSSize(width: 1920, height: 1080)) { rect in
     drawRoundedIcon(icon, in: NSRect(x: 865, y: 745, width: 190, height: 190))
     drawText("Clear for leaders. Actionable for employees.", in: NSRect(x: 180, y: 545, width: 1560, height: 100), size: 56, weight: .bold, color: .white, rounded: true)
     drawText("github.com/abadikaka/simpleboard", in: NSRect(x: 260, y: 450, width: 1400, height: 58), size: 34, weight: .medium, color: NSColor(calibratedRed: 0.68, green: 0.71, blue: 1.0, alpha: 1))
-    drawText("AI-generated narration using OpenAI speech synthesis", in: NSRect(x: 260, y: 110, width: 1400, height: 42), size: 24, weight: .regular, color: mutedText)
+    drawText("Synthetic narration generated locally with macOS", in: NSRect(x: 260, y: 110, width: 1400, height: 42), size: 24, weight: .regular, color: mutedText)
 }
 
 let thumbnail = render(size: NSSize(width: 1280, height: 720)) { rect in

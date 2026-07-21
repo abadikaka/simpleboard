@@ -10,7 +10,7 @@
 | 01:33–01:48 | Closed feedback loop | Updated owner dashboard and Performance view |
 | 01:48–02:29 | Codex + GPT-5.6 | Native project, typed models, app store, persistence, tests, screenshot-debug-build loop |
 | 02:29–02:44 | Product close | Leader/employee promise and TestFlight-ready proof |
-| 02:44–02:48 | End card | Repository URL and AI-generated narration disclosure |
+| 02:44–02:48 | End card | Repository URL and local synthetic-narration disclosure |
 
 ## Visual rules
 

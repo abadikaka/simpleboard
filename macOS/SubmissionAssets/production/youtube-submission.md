@@ -14,7 +14,7 @@ We built Simple Board with Codex and GPT-5.6. Codex worked directly in the repos
 
 Source code: https://github.com/abadikaka/simpleboard
 
-Narration disclosure: This video uses AI-generated narration created with OpenAI speech synthesis. The ambient bed and interface tones were synthesized specifically for this video; no stock music or sampled third-party audio was used.
+Narration disclosure: This video uses synthetic narration generated locally with the built-in macOS speech synthesizer. The ambient bed and interface tones were synthesized specifically for this video; no stock music or sampled third-party audio was used.
 
 ## Chapters
 
